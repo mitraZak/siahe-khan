@@ -58,25 +58,25 @@ fig.update_layout(uniformtext_minsize=5)
 entranceyear_bytes = fig.to_image(format="png", width=400, height=400)
 
 ### bar charts
-population = {6425 : "مهندسی",
-             530 : "منابع طبیعی و محیط زیست", 
-             370 : "معماری و شهرسازی",
-             2675: "کشاورزی",
-             835 : "علوم ورزشی",
-             1335 : "علوم ریاضی",
-             1660: "علوم تربیتی و روانشناسی",
-             2510 : "علوم اداری و اقتصادی",
-             2355 : "علوم",
-             900 : "دامپزشکی",
-             1505 : "حقوق و علوم سیاسی",
-             1555 : "الهیات و معارف اسلامی",
-             3550 : "ادبیات و علوم انسانی"}
+population = {"مهندسی" : 6425,
+             "منابع طبیعی و محیط زیست" : 530, 
+             "معماری و شهرسازی" : 370,
+             "کشاورزی": 2675,
+             "علوم ورزشی" : 835,
+             "علوم ریاضی" : 1335,
+             "علوم تربیتی و روانشناسی": 1660,
+             "علوم اداری و اقتصادی" : 2510,
+             "علوم" : 2355,
+             "دامپزشکی" : 900,
+             "حقوق و علوم سیاسی" : 1505,
+             "الهیات و معارف اسلامی" : 1555,
+             "ادبیات و علوم انسانی" : 3550}
 
 faculty_counts = df["FumFaculty"].value_counts().to_dict()
-interest_ratios = {fac: faculty_counts.get(fac, 0) / pop for pop, fac in population.items()}
+interest_ratios = {fac: faculty_counts.get(fac, 0) / pop for fac, pop in population.items()}
 max_interest = max(interest_ratios.values())
 normalized_interest_ratios = {fac: interest / max_interest for fac, interest in interest_ratios.items()}
-updated_population = {pop: {"name": fac, "interest": normalized_interest_ratios[fac]} for pop, fac in population.items()}
+updated_population = {fac: {"name": fac, "interest": normalized_interest_ratios[fac]} for fac in population.keys()}
 interest_df = pd.DataFrame.from_dict(updated_population, orient='index').reset_index(drop=True)
 
 fig = px.bar(interest_df, x= "name", y= "interest", color= "name")
